@@ -11,12 +11,12 @@ export function FinalCTA() {
       
       <Container className="relative z-10 max-w-3xl text-center">
         <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-6 leading-tight text-balance">
-          It's More Than Coffee.<br/>
-          It's A Commitment.
+          Stop Settling For &quot;Good Enough&quot;.<br/>
+          It&apos;s Time To Reclaim Your Prime.
         </h2>
         
         <p className="text-lg md:text-xl text-neutral-300 mb-10 max-w-2xl mx-auto">
-          Start your morning with intention. Experience the confidence that comes from prioritizing your daily wellbeing.
+          Take control of your energy, your stamina, and your confidence. Join the men who refuse to let age dictate their drive. Your return to form starts with one simple morning ritual.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

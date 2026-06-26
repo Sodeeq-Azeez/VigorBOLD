@@ -6,12 +6,6 @@ export function Footer() {
     <footer className="bg-brand-dark text-neutral-400 py-12 md:py-16 border-t border-white/10 text-center text-sm">
       <Container className="max-w-4xl mx-auto flex flex-col items-center gap-8">
         
-        {/* Legal Links */}
-        <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 font-medium text-neutral-300">
-          <Link href="/privacy" className="hover:text-brand-gold transition-colors">Privacy Policy</Link>
-          <Link href="/terms" className="hover:text-brand-gold transition-colors">Terms & Conditions</Link>
-          <Link href="/policies" className="hover:text-brand-gold transition-colors">Refund & Delivery Policy</Link>
-        </div>
 
         {/* Medical / General Disclaimer */}
         <div className="space-y-4 text-xs leading-relaxed opacity-80">

@@ -8,27 +8,23 @@ export function TestimonialsSection() {
   const testimonials = [
     {
       quote: "Makes me feel like a 25-year-old again.",
-      imagePlaceholder: "Testimonial 1"
+      image: "/images/testimonials/testimonial-2.jpg"
     },
     {
       quote: "For over twenty years, I've not been able to act like a man. But with VigorBOLD, I'm like a 25-year-old man.",
-      imagePlaceholder: "Testimonial 2"
+      image: "/images/testimonials/testimonial-1.jpg"
     },
     {
-      quote: "Energy, strength and long-lasting vitality.",
-      imagePlaceholder: "Testimonial 3"
+      quote: "at 65, my wife will soon put to bed; it makes me very strong",
+      image: "/images/testimonials/testimonial-3.jpg"
     },
     {
-      quote: "It rejuvenated me. I feel stronger and more energetic than before.",
-      imagePlaceholder: "Testimonial 4"
+      quote: "Vigor bold cleared every sign of prostrate I have.",
+      image: "/images/testimonials/testimonial-5.jpg"
     },
     {
-      quote: "My confidence is completely restored. This is a game changer.",
-      imagePlaceholder: "Testimonial 5"
-    },
-    {
-      quote: "I highly recommend it to any man looking for that extra spark.",
-      imagePlaceholder: "Testimonial 6"
+      quote: "Not to talk of the energy, strength and long-lasting libido. It is expectionally brilliant.",
+      image: "/images/testimonials/testimonial-6.jpg"
     }
   ]
 
@@ -53,7 +49,7 @@ export function TestimonialsSection() {
               <div className="mt-auto pt-6 border-t border-neutral-100">
                 <div className="relative w-full h-[400px] bg-neutral-100 rounded-lg overflow-hidden">
                   <Image 
-                    src={`/images/testimonials/testimonial-${i + 1}.jpg`} 
+                    src={testimonial.image} 
                     alt="Customer testimonial" 
                     fill 
                     className="object-contain bg-black/5 p-2"

@@ -20,20 +20,20 @@ export function ProductReveal() {
           <div className="order-1 lg:order-2 flex flex-col items-start text-left">
             <SectionHeading 
               overline="Introducing VigorBOLD"
-              title="More Than a Cup of Coffee. A Daily Commitment to Your Wellbeing."
+              title="Not Just Another Cup of Coffee. A Daily Ritual to Reclaim Your Prime."
               align="left"
               className="mb-8"
             />
             
             <div className="space-y-6 text-neutral-600 text-lg">
               <p>
-                VigorBOLD is a premium herbal coffee crafted for men who want to make their daily routine work harder for them.
+                VigorBOLD isn&apos;t just about waking up—it&apos;s about stepping into your day with the raw energy and absolute confidence of your youth.
               </p>
               <p>
-                Every sachet combines premium Arabian coffee with carefully selected botanical ingredients traditionally associated with men&apos;s vitality and overall wellness, including <strong>Tongkat Ali, Maca Root, Cordyceps, and Reishi Mushroom.</strong>
+                We&apos;ve combined rich, premium Arabian coffee with a potent blend of ancient botanical ingredients renowned for their ability to ignite male vitality: <strong>Tongkat Ali, Maca Root, Cordyceps, and Reishi Mushroom.</strong>
               </p>
               <p>
-                Instead of adding another complicated supplement routine to your day, VigorBOLD fits naturally into something you already enjoy.
+                No handfuls of pills. No complicated supplement routines. Just one delicious cup every morning that quietly works to restore your natural drive, endurance, and strength from the inside out.
               </p>
               
               <ul className="pt-4 space-y-3 font-serif text-xl font-semibold text-brand-dark">

@@ -16,33 +16,31 @@ export function ProblemSection() {
             Not because they aren&apos;t important.
           </p>
           <p>
-            But because they&apos;re personal.
+            But because they&apos;re deeply personal.
           </p>
           <p>
-            You don&apos;t usually tell your friends that you&apos;ve been feeling more tired than you used to.
-            You don&apos;t casually bring up that your confidence isn&apos;t quite the same.
-            You don&apos;t admit that, after a long day, you sometimes feel like you&apos;ve got nothing left to give.
+            You don&apos;t casually bring up the silent frustration of wanting to be fully present, but feeling like your body won&apos;t cooperate.
           </p>
           <p>
-            Not at work.<br/>
-            Not at home.<br/>
-            Not even in the quiet moments that should bring you closer to the person you love.
+            You don&apos;t admit that the spark—the natural, undeniable drive you used to take for granted—sometimes feels like a distant memory.
           </p>
           <p>
-            Life has a way of demanding more from us every year.
-            More responsibilities. More pressure. More expectations.
+            Especially in those quiet, intimate moments that are supposed to bring you closest to the person you love. Instead of passion, there is pressure. Instead of deep connection, there is unspoken disappointment.
           </p>
           <p>
-            And somewhere along the journey, many men begin to feel like they&apos;re operating with less energy, less drive, and less confidence than they once had.
+            It can make you feel distant. Less confident. Less like the man you know you truly are.
           </p>
           <p>
-            It&apos;s subtle at first. Then one day you find yourself remembering what it felt like to wake up refreshed. To tackle the day with enthusiasm. To enjoy moments of closeness without overthinking them. 
+            It happens subtly. The weight of daily life, the endless responsibilities, and the passing years slowly drain your stamina and dull your edge.
+          </p>
+          <p>
+            But deep down, you still remember what it felt like to be unstoppable. To have energy to spare. To share moments of intense closeness with absolute certainty, vitality, and strength.
           </p>
           <p className="font-semibold text-brand-dark text-xl md:text-2xl pt-4 border-b-2 border-brand-gold/30 pb-2 inline-block">
-            To simply feel like yourself.
+            To simply feel like yourself again.
           </p>
           <p className="pt-4">
-            Growing older is inevitable. Feeling disconnected from the man you know yourself to be doesn&apos;t have to be.
+            Growing older is a fact of life. Losing your edge and your intimate connection doesn&apos;t have to be.
           </p>
         </div>
       </Container>
