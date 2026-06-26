@@ -4,7 +4,7 @@
 CREATE TYPE order_status AS ENUM ('pending', 'paid', 'processing', 'shipped', 'delivered', 'cancelled');
 
 -- Create an enum for payment method
-CREATE TYPE payment_method AS ENUM ('pay_on_delivery', 'flutterwave');
+CREATE TYPE payment_method AS ENUM ('pay_on_delivery', 'paystack');
 
 -- Orders table
 CREATE TABLE IF NOT EXISTS orders (

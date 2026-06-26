@@ -11,9 +11,9 @@ export function ProductReveal() {
           <div className="order-2 lg:order-1 relative aspect-square max-w-md mx-auto w-full lg:max-w-none">
             {/* Using a placeholder since image is coming later */}
             <div className="absolute inset-0 bg-gradient-to-tr from-brand-gold/20 to-transparent rounded-2xl -z-10 blur-3xl transform -rotate-6" />
-            <div className="relative h-full w-full bg-neutral-100 rounded-2xl flex items-center justify-center border border-neutral-200 overflow-hidden shadow-xl">
-              <span className="text-neutral-400 font-serif text-lg">[Product Packaging Render]</span>
-              {/* <Image src="/images/product/product-render.png" alt="VigorBOLD Herbal Coffee" fill className="object-contain p-8" /> */}
+            <div className="relative aspect-square w-full max-w-md mx-auto">
+              <div className="absolute inset-0 bg-brand-gold/10 rounded-full blur-3xl opacity-50 animate-pulse" />
+              <Image src="/images/product/vigorbold-2.jpg" alt="VigorBOLD Herbal Coffee" fill className="object-contain p-8 rounded-3xl" />
             </div>
           </div>
           

@@ -45,16 +45,12 @@ export function DailyRitual() {
           </div>
           
           <div className="relative aspect-[3/2] w-full rounded-2xl overflow-hidden shadow-2xl">
-            <div className="absolute inset-0 bg-neutral-200 animate-pulse" />
-            <div className="absolute inset-0 flex items-center justify-center text-neutral-400 font-serif z-10">
-              [Morning Coffee Lifestyle Image]
-            </div>
-            {/* <Image 
-              src="/images/lifestyle/lifestyle-morning.jpg" 
+            <Image 
+              src="/images/product/vigorbold-3.jpg" 
               alt="Morning coffee ritual" 
               fill 
               className="object-cover relative z-20"
-            /> */}
+            />
           </div>
         </div>
       </Container>

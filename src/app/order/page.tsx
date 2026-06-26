@@ -36,9 +36,11 @@ function OrderForm() {
   const searchParams = useSearchParams()
   const initialPackage = searchParams.get("package") || "popular"
   
+  const isSuccessRedirect = searchParams.get("status") === "success"
+  
   const [selectedPackage, setSelectedPackage] = useState(initialPackage)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [submitSuccess, setSubmitSuccess] = useState(isSuccessRedirect)
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,7 +66,8 @@ function OrderForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           packageDetails: selectedPkg,
-          values
+          values,
+          originUrl: window.location.origin
         })
       })
 
@@ -74,9 +77,12 @@ function OrderForm() {
         throw new Error(data.error || "Failed to submit order")
       }
 
-      if (data.paymentMethod === "flutterwave") {
-        // TODO: Phase 7 - Redirect to Flutterwave
-        alert("Proceeding to Flutterwave payment... (Implementation pending)")
+      if (data.paymentMethod === "paystack") {
+        if (data.authorization_url) {
+          window.location.href = data.authorization_url
+        } else {
+          throw new Error("Missing authorization URL from payment gateway")
+        }
       } else {
         setSubmitSuccess(true)
         window.scrollTo(0, 0)
@@ -97,8 +103,10 @@ function OrderForm() {
         </div>
         <h2 className="text-3xl font-serif font-bold text-brand-dark mb-4">Order Received Successfully!</h2>
         <p className="text-lg text-neutral-600 mb-8">
-          Thank you, {form.getValues().firstName}. Your order for {selectedPkg.name} has been confirmed. 
-          Our dispatch team will contact you shortly on WhatsApp to coordinate your delivery.
+          {isSuccessRedirect 
+            ? "Your payment was successful and your order has been confirmed. You will receive an email shortly."
+            : `Thank you, ${form.getValues().firstName}. Your order for ${selectedPkg.name} has been confirmed. Our dispatch team will contact you shortly on WhatsApp to coordinate your delivery.`
+          }
         </p>
       </div>
     )
@@ -262,7 +270,7 @@ function OrderForm() {
                       <p className="text-neutral-600 mt-1">
                         {podAvailable 
                           ? `Good news! Payment on Delivery is available in ${selectedState}. You will only pay when your order arrives.`
-                          : `Because you are ordering to ${selectedState}, secure online payment is required before dispatch. Your payment is protected by Flutterwave.`
+                          : `Because you are ordering to ${selectedState}, secure online payment is required before dispatch. Your payment is protected by Paystack.`
                         }
                       </p>
                     </div>

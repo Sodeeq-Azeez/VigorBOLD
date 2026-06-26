@@ -8,8 +8,8 @@ export function Hero() {
     <div className="relative min-h-[90vh] flex items-center justify-center bg-brand-dark overflow-hidden">
       {/* Background Image / Overlay */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-overlay"
-        style={{ backgroundImage: "url('/images/hero/hero-lifestyle.jpg')" }}
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-overlay"
+        style={{ backgroundImage: "url('/images/product/vigorbold-1.jpg')" }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-brand-dark/50 via-brand-dark/80 to-brand-dark" />
       
@@ -22,11 +22,11 @@ export function Hero() {
           Deserves to feel like the man you know you are.
         </h1>
         
-        <p className="text-lg md:text-xl text-neutral-300 max-w-2xl mb-12 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
-          A premium herbal coffee crafted for men who want to make their daily routine work harder for them.
+        <p className="mt-6 text-lg md:text-xl text-neutral-300 max-w-2xl font-light leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
+          More than a cup of coffee. Premium herbal coffee crafted to restore your energy, stamina, and drive when it matters most.
         </p>
         
-        <div className="animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-500">
+        <div className="animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-500 mt-12">
           <Link href="/order">
             <Button size="lg" className="bg-brand-gold hover:bg-brand-gold-light text-brand-dark text-lg font-semibold px-8 h-14 rounded-md shadow-[0_0_20px_rgba(201,168,76,0.3)]">
               Order VigorBOLD Now <ArrowRight className="ml-2 h-5 w-5" />

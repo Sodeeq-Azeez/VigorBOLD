@@ -8,28 +8,28 @@ export function IngredientsSection() {
   const ingredients = [
     {
       name: "Tongkat Ali",
-      description: "Traditionally associated with male vitality and overall wellbeing.",
-      imagePlaceholder: "[Tongkat Ali Image]"
+      description: "Traditionally associated with boosting male vitality, stamina, and natural drive.",
+      image: "/images/ingredients/tongkat-ali.png"
     },
     {
       name: "Maca Root",
-      description: "Traditionally used to support energy and active living.",
-      imagePlaceholder: "[Maca Root Image]"
+      description: "Revered for centuries for its ability to naturally enhance energy, endurance, and a healthy libido.",
+      image: "/images/ingredients/maca-root.png"
     },
     {
       name: "Cordyceps",
       description: "Valued for its association with endurance and vitality.",
-      imagePlaceholder: "[Cordyceps Image]"
+      image: "/images/ingredients/cordyceps.png"
     },
     {
       name: "Ganoderma Lucidum (Reishi)",
       description: "Known for its antioxidant properties and role in supporting overall wellness.",
-      imagePlaceholder: "[Reishi Image]"
+      image: "/images/ingredients/reishi.png"
     },
     {
       name: "Premium Arabian Coffee",
       description: "Delivers a rich, enjoyable coffee experience while serving as the foundation of every cup.",
-      imagePlaceholder: "[Coffee Beans Image]"
+      image: "/images/ingredients/coffee.png"
     }
   ]
 
@@ -45,16 +45,12 @@ export function IngredientsSection() {
           {ingredients.map((ingredient, i) => (
             <Card key={i} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-shadow duration-300">
               <div className="aspect-square relative bg-neutral-100 flex items-center justify-center p-6">
-                <div className="absolute inset-0 bg-neutral-200 animate-pulse" />
-                <span className="relative z-10 text-neutral-500 font-serif text-sm text-center">
-                  {ingredient.imagePlaceholder}
-                </span>
-                {/* <Image 
-                  src={`/images/ingredients/ingredient-${i + 1}.jpg`} 
+                <Image 
+                  src={ingredient.image} 
                   alt={ingredient.name} 
                   fill 
                   className="object-cover relative z-20"
-                /> */}
+                />
               </div>
               <CardContent className="p-6">
                 <h4 className="text-xl font-serif font-semibold text-brand-dark mb-3">
