@@ -113,8 +113,13 @@ function OrderForm() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 mb-24">
-      {/* Form Section */}
+    <>
+      <div className="pt-12 pb-6">
+        <h1 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark tracking-tight">Secure Checkout</h1>
+        <p className="text-neutral-600 mt-2">Complete your order below. Your information is secure and encrypted.</p>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6 mb-24">
+        {/* Form Section */}
       <div className="lg:col-span-7">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -335,6 +340,7 @@ function OrderForm() {
         </div>
       </div>
     </div>
+    </>
   )
 }
 
@@ -344,11 +350,7 @@ export default function OrderPage() {
       <Header />
       <main className="min-h-[80vh] bg-neutral-50">
         <Container>
-          <div className="pt-12 pb-6">
-            <h1 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark tracking-tight">Secure Checkout</h1>
-            <p className="text-neutral-600 mt-2">Complete your order below. Your information is secure and encrypted.</p>
-          </div>
-          
+
           <Suspense fallback={<div className="h-[60vh] flex items-center justify-center text-neutral-500">Loading order form...</div>}>
             <OrderForm />
           </Suspense>
