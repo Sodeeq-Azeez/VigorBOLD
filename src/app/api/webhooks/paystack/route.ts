@@ -48,7 +48,7 @@ export async function POST(req: Request) {
       // Send Order Confirmation Email to Customer
       if (order.email && !order.email.endsWith("@vigorbold-customer.com")) {
         try {
-          await resend.emails.send({
+          const { data, error: emailErrorObj } = await resend.emails.send({
             from: `VigorBOLD Orders <${FROM_EMAIL}>`,
             to: order.email,
             subject: "Your VigorBOLD Order Confirmation",
@@ -62,8 +62,13 @@ export async function POST(req: Request) {
               state: order.state
             })
           })
-        } catch (emailError) {
-          console.error("Failed to send customer email in webhook:", emailError)
+          if (emailErrorObj) {
+            console.error("Resend customer email error in webhook:", emailErrorObj)
+          } else {
+            console.log("Customer email sent successfully in webhook:", data)
+          }
+        } catch (emailException) {
+          console.error("Failed to send customer email in webhook (exception):", emailException)
         }
       }
 
@@ -72,7 +77,7 @@ export async function POST(req: Request) {
       if (adminEmail) {
         try {
           const { AdminNotificationEmail } = await import("@/emails/admin-notification")
-          await resend.emails.send({
+          const { data, error: adminErrorObj } = await resend.emails.send({
             from: `VigorBOLD System <${FROM_EMAIL}>`,
             to: adminEmail,
             subject: `🚨 New Order (Paid): ${order.package_name}`,
@@ -87,8 +92,13 @@ export async function POST(req: Request) {
               paymentMethod: "paystack"
             })
           })
-        } catch (adminEmailError) {
-          console.error("Failed to send admin email in webhook:", adminEmailError)
+          if (adminErrorObj) {
+            console.error("Resend admin email error in webhook:", adminErrorObj)
+          } else {
+            console.log("Admin email sent successfully in webhook:", data)
+          }
+        } catch (adminEmailException) {
+          console.error("Failed to send admin email in webhook (exception):", adminEmailException)
         }
       }
     }

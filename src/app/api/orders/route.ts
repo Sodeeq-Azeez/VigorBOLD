@@ -102,7 +102,7 @@ export async function POST(req: Request) {
     // If Payment on Delivery, send confirmation email immediately
     if (values.email) {
       try {
-        await resend.emails.send({
+        const { data, error } = await resend.emails.send({
           from: `VigorBOLD Orders <${FROM_EMAIL}>`,
           to: values.email,
           subject: "Your VigorBOLD Order Confirmation",
@@ -116,8 +116,13 @@ export async function POST(req: Request) {
             state: values.state
           })
         })
+        if (error) {
+          console.error("Resend customer email error:", error)
+        } else {
+          console.log("Customer email sent successfully:", data)
+        }
       } catch (emailError) {
-        console.error("Failed to send customer email:", emailError)
+        console.error("Failed to send customer email (exception):", emailError)
       }
     }
 
@@ -126,7 +131,7 @@ export async function POST(req: Request) {
     if (adminEmail) {
       try {
         const { AdminNotificationEmail } = await import("@/emails/admin-notification")
-        await resend.emails.send({
+        const { data, error } = await resend.emails.send({
           from: `VigorBOLD System <${FROM_EMAIL}>`,
           to: adminEmail,
           subject: `🚨 New Order: ${packageDetails.name}`,
@@ -141,8 +146,13 @@ export async function POST(req: Request) {
             paymentMethod: paymentMethod
           })
         })
+        if (error) {
+          console.error("Resend admin email error:", error)
+        } else {
+          console.log("Admin email sent successfully:", data)
+        }
       } catch (adminEmailError) {
-        console.error("Failed to send admin email:", adminEmailError)
+        console.error("Failed to send admin email (exception):", adminEmailError)
       }
     }
 
