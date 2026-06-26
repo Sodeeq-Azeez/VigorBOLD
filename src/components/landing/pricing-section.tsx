@@ -11,7 +11,7 @@ export function PricingSection() {
     {
       id: "starter",
       name: "Starter Pack",
-      sachets: 20,
+      sachets: 14,
       price: "35,000",
       description: "A great place to begin.",
       popular: false
@@ -19,7 +19,7 @@ export function PricingSection() {
     {
       id: "popular",
       name: "Most Popular",
-      sachets: 40,
+      sachets: 28,
       price: "65,000",
       originalPrice: "70,000",
       description: "More value for those building a daily routine.",
@@ -29,7 +29,7 @@ export function PricingSection() {
     {
       id: "value",
       name: "Best Value",
-      sachets: 60,
+      sachets: 42,
       price: "90,000",
       originalPrice: "105,000",
       description: "Ideal for consistent use.",
@@ -39,7 +39,7 @@ export function PricingSection() {
     {
       id: "long-term",
       name: "Long-Term Supply",
-      sachets: 140,
+      sachets: 98,
       price: "199,000",
       originalPrice: "245,000",
       description: "The best value for long-term users.",
@@ -122,6 +122,9 @@ export function PricingSection() {
                       Order Now
                     </Button>
                   </Link>
+                  <p className="text-center text-xs text-neutral-400 mt-3 font-medium">
+                    NAFDAC: A7-101564L
+                  </p>
                 </div>
               </CardContent>
             </Card>

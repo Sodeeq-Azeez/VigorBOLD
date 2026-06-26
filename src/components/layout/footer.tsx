@@ -9,9 +9,11 @@ export function Footer() {
 
         {/* Medical / General Disclaimer */}
         <div className="space-y-4 text-xs leading-relaxed opacity-80">
+          <p className="font-bold text-neutral-300">
+            NAFDAC Registration Number: A7-101564L
+          </p>
           <p>
-            *DISCLAIMER: The statements made on this website have not been evaluated by the FDA or NAFDAC. 
-            This product is not intended to diagnose, treat, cure, or prevent any disease. The information provided by this website 
+            *DISCLAIMER: This product is not intended to diagnose, treat, cure, or prevent any disease. The information provided by this website 
             or this company is not a substitute for a face-to-face consultation with your physician, and should not be construed 
             as individual medical advice.
           </p>
