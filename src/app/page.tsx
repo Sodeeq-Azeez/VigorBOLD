@@ -1,8 +1,6 @@
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { StickyBar } from "@/components/layout/sticky-cta"
-import { WhatsAppFAB } from "@/components/shared/whatsapp-fab"
-
 import { Hero } from "@/components/landing/hero"
 import { ProblemSection } from "@/components/landing/problem-section"
 import { ProductReveal } from "@/components/landing/product-reveal"
@@ -40,7 +38,6 @@ export default function Home() {
       </main>
 
       <Footer />
-      <WhatsAppFAB />
     </>
   )
 }
