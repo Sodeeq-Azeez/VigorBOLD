@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Container } from "./container";
 import { Coffee } from "lucide-react"; // Temporary logo
 
-export function Header() {
+export function Header({ hideNav = false }: { hideNav?: boolean }) {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-brand-dark/95 backdrop-blur supports-[backdrop-filter]:bg-brand-dark/80 text-white">
       <Container>
@@ -14,7 +14,8 @@ export function Header() {
             <span className="font-serif text-xl font-bold tracking-tight">VigorBOLD</span>
           </Link>
           
-          <nav className="flex items-center gap-6 text-sm font-medium">
+          {!hideNav && (
+            <nav className="flex items-center gap-6 text-sm font-medium">
             <Link 
               href="/#how-it-works" 
               className="hidden sm:block text-neutral-300 hover:text-white transition-colors"
@@ -34,6 +35,7 @@ export function Header() {
               Order Now
             </Link>
           </nav>
+          )}
         </div>
       </Container>
     </header>

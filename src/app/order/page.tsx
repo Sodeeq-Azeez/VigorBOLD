@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, Suspense } from "react"
+import { useState, Suspense, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -94,6 +94,18 @@ function OrderForm() {
       setIsSubmitting(false)
     }
   }
+
+  useEffect(() => {
+    if (submitSuccess) {
+      // Prevent going back
+      window.history.pushState(null, "", window.location.href);
+      const handlePopState = () => {
+        window.history.pushState(null, "", window.location.href);
+      };
+      window.addEventListener("popstate", handlePopState);
+      return () => window.removeEventListener("popstate", handlePopState);
+    }
+  }, [submitSuccess]);
 
   if (submitSuccess) {
     const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "2348141181083"
@@ -363,7 +375,7 @@ function OrderForm() {
 export default function OrderPage() {
   return (
     <>
-      <Header />
+      <Header hideNav />
       <main className="min-h-[80vh] bg-neutral-50">
         <Container>
 
