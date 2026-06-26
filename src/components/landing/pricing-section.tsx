@@ -52,8 +52,18 @@ export function PricingSection() {
     <Section variant="default" id="pricing">
       <Container>
         <SectionHeading 
-          title="Choose the Package That Fits You"
+          overline="Your Investment In Peak Performance"
+          title="What Is It Worth To Feel Like Yourself Again?"
         />
+        
+        <div className="max-w-3xl mx-auto text-center text-lg md:text-xl text-neutral-600 mb-12 font-serif leading-relaxed">
+          <p>
+            A single prescription for those &quot;temporary fixes&quot; or endless visits to specialists can easily cost you over ₦150,000 a month—and that&apos;s just for a band-aid that often comes with nasty side effects.
+          </p>
+          <p className="mt-4 font-semibold text-brand-dark">
+            VigorBOLD offers a natural, lasting return to your prime for a fraction of that cost. Choose your supply below.
+          </p>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mt-12">
           {packages.map((pkg) => (

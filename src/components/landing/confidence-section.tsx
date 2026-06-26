@@ -4,11 +4,10 @@ import { ShieldCheck } from "lucide-react"
 
 export function ConfidenceSection() {
   const benefits = [
-    "When you wake up ready for the day.",
-    "When you have the energy to focus on your work.",
-    "When you're fully present with your family.",
-    "When you carry yourself with quiet assurance.",
-    "When you feel engaged, capable, and connected."
+    "You wake up ready to conquer the day, instead of dragging yourself out of bed.",
+    "You attack your work with laser focus, instead of coasting on fumes.",
+    "You step into the bedroom with absolute certainty, knowing you have the stamina to back it up.",
+    "You carry yourself with the quiet, magnetic assurance of a man in his prime."
   ]
 
   return (
@@ -17,13 +16,13 @@ export function ConfidenceSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold tracking-tight text-brand-dark mb-6 text-balance leading-tight">
-              Because Confidence Doesn&apos;t Begin in the Bedroom.
+              True Confidence Isn&apos;t Faked. It&apos;s Fueled.
             </h2>
             <p className="text-xl md:text-2xl text-brand-gold-dark font-serif italic border-l-4 border-brand-gold pl-6 py-2 mb-8">
-              It Begins With How You Feel Every Day.
+              When your body is fully charged, you dominate every area of your life.
             </p>
             <p className="text-lg text-neutral-600 mb-8">
-              Confidence is built long before life&apos;s most important moments.
+              You can&apos;t fake raw energy. You can&apos;t pretend to have stamina when your tank is empty. But when you finally restore your natural vitality, the effects bleed into everything you do.
             </p>
             
             <ul className="space-y-4">
@@ -38,24 +37,24 @@ export function ConfidenceSection() {
           
           <div className="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-neutral-100">
             <p className="text-lg text-neutral-700 mb-6">
-              Many men discover that taking better care of themselves influences every part of life:
+              When you fix the foundation, the rest automatically follows:
             </p>
             <ul className="space-y-4 font-serif text-xl font-semibold text-brand-dark mb-8">
               <li className="flex items-center gap-3">
-                <div className="w-12 h-px bg-brand-gold/50" /> Their outlook.
+                <div className="w-12 h-px bg-brand-gold/50" /> Unbreakable Focus.
               </li>
               <li className="flex items-center gap-3">
-                <div className="w-12 h-px bg-brand-gold/50" /> Their consistency.
+                <div className="w-12 h-px bg-brand-gold/50" /> Relentless Energy.
               </li>
               <li className="flex items-center gap-3">
-                <div className="w-12 h-px bg-brand-gold/50" /> Their relationships.
+                <div className="w-12 h-px bg-brand-gold/50" /> Intimate Dominance.
               </li>
               <li className="flex items-center gap-3">
-                <div className="w-12 h-px bg-brand-gold/50" /> Their sense of purpose.
+                <div className="w-12 h-px bg-brand-gold/50" /> Magnetic Confidence.
               </li>
             </ul>
             <p className="text-lg text-neutral-600 italic">
-              VigorBOLD was created to become part of that journey.
+              VigorBOLD is the biological foundation you&apos;ve been missing.
             </p>
           </div>
         </div>
