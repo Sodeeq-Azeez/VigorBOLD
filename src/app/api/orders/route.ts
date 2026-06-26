@@ -103,7 +103,7 @@ export async function POST(req: Request) {
     if (values.email) {
       try {
         const { data, error } = await resend.emails.send({
-          from: `VigorBOLD Orders <${FROM_EMAIL}>`,
+          from: `Zeenu Enterprises <${FROM_EMAIL}>`,
           to: values.email,
           subject: "Your VigorBOLD Order Confirmation",
           react: OrderConfirmationEmail({
@@ -132,7 +132,7 @@ export async function POST(req: Request) {
       try {
         const { AdminNotificationEmail } = await import("@/emails/admin-notification")
         const { data, error } = await resend.emails.send({
-          from: `VigorBOLD System <${FROM_EMAIL}>`,
+          from: `Zeenu Enterprises System <${FROM_EMAIL}>`,
           to: adminEmail,
           subject: `🚨 New Order: ${packageDetails.name}`,
           react: AdminNotificationEmail({

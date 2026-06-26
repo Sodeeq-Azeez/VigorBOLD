@@ -49,7 +49,7 @@ export async function POST(req: Request) {
       if (order.email && !order.email.endsWith("@vigorbold-customer.com")) {
         try {
           const { data, error: emailErrorObj } = await resend.emails.send({
-            from: `VigorBOLD Orders <${FROM_EMAIL}>`,
+            from: `Zeenu Enterprises <${FROM_EMAIL}>`,
             to: order.email,
             subject: "Your VigorBOLD Order Confirmation",
             react: OrderConfirmationEmail({
@@ -78,7 +78,7 @@ export async function POST(req: Request) {
         try {
           const { AdminNotificationEmail } = await import("@/emails/admin-notification")
           const { data, error: adminErrorObj } = await resend.emails.send({
-            from: `VigorBOLD System <${FROM_EMAIL}>`,
+            from: `Zeenu Enterprises System <${FROM_EMAIL}>`,
             to: adminEmail,
             subject: `🚨 New Order (Paid): ${order.package_name}`,
             react: AdminNotificationEmail({
