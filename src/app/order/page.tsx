@@ -96,6 +96,10 @@ function OrderForm() {
   }
 
   if (submitSuccess) {
+    const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "2348141181083"
+    const message = encodeURIComponent(`Hi! I just placed an order for the ${selectedPkg.name}. My name is ${form.getValues().firstName}.`)
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`
+
     return (
       <div className="py-24 text-center max-w-2xl mx-auto px-4">
         <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -105,9 +109,21 @@ function OrderForm() {
         <p className="text-lg text-neutral-600 mb-8">
           {isSuccessRedirect 
             ? "Your payment was successful and your order has been confirmed. You will receive an email shortly."
-            : `Thank you, ${form.getValues().firstName}. Your order for ${selectedPkg.name} has been confirmed. Our dispatch team will contact you shortly on WhatsApp to coordinate your delivery.`
+            : `Thank you, ${form.getValues().firstName}. Your order for ${selectedPkg.name} has been confirmed.`
           }
         </p>
+        
+        <div className="bg-neutral-50 border border-neutral-100 rounded-xl p-8 max-w-md mx-auto">
+          <h3 className="font-bold text-xl text-brand-dark mb-3">Next Step: Confirm on WhatsApp</h3>
+          <p className="text-neutral-600 mb-6">
+            Please click the button below to send us a quick message on WhatsApp so our dispatch team can coordinate your delivery immediately.
+          </p>
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+            <Button size="lg" className="w-full h-14 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-lg">
+              Confirm on WhatsApp
+            </Button>
+          </a>
+        </div>
       </div>
     )
   }

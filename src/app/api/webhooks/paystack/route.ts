@@ -45,7 +45,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Database error" }, { status: 500 })
       }
 
-      // Send Order Confirmation Email
+      // Send Order Confirmation Email to Customer
       if (order.email && !order.email.endsWith("@vigorbold-customer.com")) {
         try {
           await resend.emails.send({
@@ -63,7 +63,32 @@ export async function POST(req: Request) {
             })
           })
         } catch (emailError) {
-          console.error("Failed to send email in webhook:", emailError)
+          console.error("Failed to send customer email in webhook:", emailError)
+        }
+      }
+
+      // Send Admin Notification
+      const adminEmail = process.env.ADMIN_EMAIL
+      if (adminEmail) {
+        try {
+          const { AdminNotificationEmail } = await import("@/emails/admin-notification")
+          await resend.emails.send({
+            from: `VigorBOLD System <${FROM_EMAIL}>`,
+            to: adminEmail,
+            subject: `🚨 New Order (Paid): ${order.package_name}`,
+            react: AdminNotificationEmail({
+              orderId: order.id,
+              customerName: `${order.first_name} ${order.last_name}`,
+              phone: order.phone,
+              state: order.state,
+              address: order.address,
+              packageName: order.package_name,
+              totalAmount: order.total_amount,
+              paymentMethod: "paystack"
+            })
+          })
+        } catch (adminEmailError) {
+          console.error("Failed to send admin email in webhook:", adminEmailError)
         }
       }
     }

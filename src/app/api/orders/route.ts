@@ -117,8 +117,32 @@ export async function POST(req: Request) {
           })
         })
       } catch (emailError) {
-        console.error("Failed to send email:", emailError)
-        // We don't fail the order if the email fails
+        console.error("Failed to send customer email:", emailError)
+      }
+    }
+
+    // Send Admin Notification
+    const adminEmail = process.env.ADMIN_EMAIL
+    if (adminEmail) {
+      try {
+        const { AdminNotificationEmail } = await import("@/emails/admin-notification")
+        await resend.emails.send({
+          from: `VigorBOLD System <${FROM_EMAIL}>`,
+          to: adminEmail,
+          subject: `🚨 New Order: ${packageDetails.name}`,
+          react: AdminNotificationEmail({
+            orderId: orderId,
+            customerName: `${values.firstName} ${values.lastName}`,
+            phone: values.phone,
+            state: values.state,
+            address: values.address,
+            packageName: packageDetails.name,
+            totalAmount: packageDetails.price,
+            paymentMethod: paymentMethod
+          })
+        })
+      } catch (adminEmailError) {
+        console.error("Failed to send admin email:", adminEmailError)
       }
     }
 
