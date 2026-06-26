@@ -17,10 +17,10 @@ import { CheckCircle2, ShieldCheck, Truck, CreditCard, Wallet } from "lucide-rea
 import { nigerianStates, isPodAvailable } from "@/lib/states"
 
 const packages = [
-  { id: "starter", name: "Starter Pack (20 Sachets)", price: 35000 },
-  { id: "popular", name: "Most Popular (40 Sachets)", price: 65000 },
-  { id: "value", name: "Best Value (60 Sachets)", price: 90000 },
-  { id: "long-term", name: "Long-Term Supply (140 Sachets)", price: 199000 }
+  { id: "starter", name: "Starter Pack (14 Sachets)", price: 35000 },
+  { id: "popular", name: "Most Popular (28 Sachets)", price: 65000 },
+  { id: "value", name: "Best Value (42 Sachets)", price: 90000 },
+  { id: "long-term", name: "Long-Term Supply (98 Sachets)", price: 199000 }
 ]
 
 const formSchema = z.object({
