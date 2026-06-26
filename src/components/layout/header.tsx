@@ -1,8 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "./container";
-import { Coffee } from "lucide-react"; // Temporary logo
 
 export function Header({ hideNav = false }: { hideNav?: boolean }) {
   return (
@@ -10,7 +10,7 @@ export function Header({ hideNav = false }: { hideNav?: boolean }) {
       <Container>
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Coffee className="h-6 w-6 text-brand-gold" />
+            <Image src="/images/logo.png" alt="VigorBOLD Logo" width={32} height={32} className="rounded-sm" />
             <span className="font-serif text-xl font-bold tracking-tight">VigorBOLD</span>
           </Link>
           
