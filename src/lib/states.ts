@@ -1,0 +1,13 @@
+export const nigerianStates = [
+  "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", 
+  "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "FCT - Abuja", "Gombe", 
+  "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", 
+  "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", 
+  "Taraba", "Yobe", "Zamfara"
+];
+
+export const podStates = ["Lagos", "FCT - Abuja", "Kwara"];
+
+export function isPodAvailable(state: string) {
+  return podStates.includes(state);
+}

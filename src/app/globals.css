@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
+
+  /* Brand Colors from Plan */
+  --color-brand-gold: #C9A84C;
+  --color-brand-gold-light: #E2C97D;
+  --color-brand-gold-dark: #A68A3E;
+  
+  --color-brand-dark: #1A1A2E;
+  --color-brand-navy: #16213E;
+  --color-brand-deep: #0F3460;
+
+  /* Neutrals from Plan */
+  --color-neutral-50: #FAFAF8;
+  --color-neutral-100: #F5F3EF;
+  --color-neutral-200: #E8E4DD;
+  --color-neutral-300: #D1CBC0;
+  --color-neutral-400: #A69F93;
+  --color-neutral-500: #7A7368;
+  --color-neutral-600: #5C564D;
+  --color-neutral-700: #3D3830;
+  --color-neutral-800: #2A2520;
+  --color-neutral-900: #1A1714;
+
+  /* Semantic Colors from Plan */
+  --color-success: #2D6A4F;
+  --color-success-light: #D8F3DC;
+  --color-error: #9B2226;
+  --color-error-light: #FDDEDE;
+  --color-warning: #CA6702;
+  --color-warning-light: #FFF3CD;
+  --color-info: #0F3460;
+  --color-info-light: #D6E4F0;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these base styles back for backward compatibility.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@layer base {
+  :root {
+    --background: 60 20% 98%; /* neutral-50 */
+    --foreground: 30 10% 10%; /* neutral-900 */
+    --card: 0 0% 100%;
+    --card-foreground: 30 10% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 30 10% 10%;
+    
+    /* Primary maps to brand-dark */
+    --primary: 240 28% 14%;
+    --primary-foreground: 60 20% 98%;
+    
+    /* Secondary maps to brand-gold */
+    --secondary: 44 53% 54%;
+    --secondary-foreground: 240 28% 14%;
+    
+    --muted: 40 20% 95%; /* neutral-100 */
+    --muted-foreground: 35 10% 40%; /* neutral-500 */
+    
+    --accent: 44 53% 54%; /* brand-gold */
+    --accent-foreground: 240 28% 14%;
+    
+    --destructive: 358 61% 37%; /* error */
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 37 20% 89%; /* neutral-200 */
+    --input: 37 20% 89%;
+    --ring: 44 53% 54%; /* brand-gold */
+    
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased selection:bg-brand-gold/30 selection:text-brand-dark;
+  }
+  
+  h1, h2, h3, .font-serif {
+    @apply font-serif tracking-tight;
+  }
+}
+
+/* Utilities for animations and custom layouts */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .glass-effect {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-sm;
+  }
+  .dark-glass-effect {
+    @apply bg-brand-dark/80 backdrop-blur-md border border-white/10 shadow-lg;
+  }
+}

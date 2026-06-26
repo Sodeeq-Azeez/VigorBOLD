@@ -1,0 +1,41 @@
+"use client";
+
+import Link from "next/link";
+import { Container } from "./container";
+import { Coffee } from "lucide-react"; // Temporary logo
+
+export function Header() {
+  return (
+    <header className="sticky top-0 z-50 w-full border-b bg-brand-dark/95 backdrop-blur supports-[backdrop-filter]:bg-brand-dark/80 text-white">
+      <Container>
+        <div className="flex h-16 items-center justify-between">
+          <Link href="/" className="flex items-center gap-2">
+            <Coffee className="h-6 w-6 text-brand-gold" />
+            <span className="font-serif text-xl font-bold tracking-tight">VigorBOLD</span>
+          </Link>
+          
+          <nav className="flex items-center gap-6 text-sm font-medium">
+            <Link 
+              href="/#how-it-works" 
+              className="hidden sm:block text-neutral-300 hover:text-white transition-colors"
+            >
+              How It Works
+            </Link>
+            <Link 
+              href="/#faq" 
+              className="hidden sm:block text-neutral-300 hover:text-white transition-colors"
+            >
+              FAQ
+            </Link>
+            <Link 
+              href="/order" 
+              className="bg-brand-gold hover:bg-brand-gold-light text-brand-dark px-4 py-2 rounded-md transition-colors font-semibold"
+            >
+              Order Now
+            </Link>
+          </nav>
+        </div>
+      </Container>
+    </header>
+  );
+}
