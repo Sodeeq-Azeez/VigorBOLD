@@ -41,6 +41,7 @@ function OrderForm() {
   const [selectedPackage, setSelectedPackage] = useState(initialPackage)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(isSuccessRedirect)
+  const [preferredPayment, setPreferredPayment] = useState<"pay_on_delivery" | "paystack">("pay_on_delivery")
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,6 +68,7 @@ function OrderForm() {
         body: JSON.stringify({
           packageDetails: selectedPkg,
           values,
+          paymentMethod: podAvailable ? preferredPayment : "paystack",
           originUrl: window.location.origin
         })
       })
@@ -288,26 +290,80 @@ function OrderForm() {
               </CardContent>
             </Card>
             
-            {/* Payment Method / Summary Box before CTA */}
+            {/* Payment Method Selection */}
             {selectedState && (
-              <Card className="border-brand-gold bg-brand-gold/5 shadow-sm">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-brand-gold/20 flex items-center justify-center shrink-0">
-                      {podAvailable ? <Wallet className="h-5 w-5 text-brand-dark" /> : <CreditCard className="h-5 w-5 text-brand-dark" />}
+              <Card className={`shadow-sm ${podAvailable && preferredPayment === "pay_on_delivery" ? "border-brand-gold bg-brand-gold/5" : "border-neutral-200"}`}>
+                <CardHeader className="bg-neutral-50/50 border-b border-neutral-100 pb-4">
+                  <CardTitle className="text-xl font-serif text-brand-dark flex items-center gap-2">
+                    <span className="bg-brand-gold text-brand-dark w-6 h-6 rounded-full flex items-center justify-center text-sm">3</span>
+                    Payment Method
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-3">
+                  {podAvailable ? (
+                    <>
+                      <label 
+                        className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                          preferredPayment === "pay_on_delivery" ? "border-brand-gold bg-brand-gold/5" : "border-neutral-100 hover:border-neutral-200"
+                        }`}
+                      >
+                        <input 
+                          type="radio" 
+                          name="payment_method" 
+                          value="pay_on_delivery" 
+                          checked={preferredPayment === "pay_on_delivery"}
+                          onChange={() => setPreferredPayment("pay_on_delivery")}
+                          className="mt-1"
+                        />
+                        <div>
+                          <div className="flex items-center gap-2 font-bold text-brand-dark text-lg">
+                            <Wallet className="h-5 w-5 text-brand-gold" />
+                            Payment on Delivery
+                          </div>
+                          <p className="text-neutral-600 mt-1 text-sm">
+                            Good news! You can pay when your order arrives in {selectedState}.
+                          </p>
+                        </div>
+                      </label>
+                      <label 
+                        className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                          preferredPayment === "paystack" ? "border-brand-gold bg-brand-gold/5" : "border-neutral-100 hover:border-neutral-200"
+                        }`}
+                      >
+                        <input 
+                          type="radio" 
+                          name="payment_method" 
+                          value="paystack" 
+                          checked={preferredPayment === "paystack"}
+                          onChange={() => setPreferredPayment("paystack")}
+                          className="mt-1"
+                        />
+                        <div>
+                          <div className="flex items-center gap-2 font-bold text-brand-dark text-lg">
+                            <CreditCard className="h-5 w-5 text-brand-gold" />
+                            Pay Securely Online
+                          </div>
+                          <p className="text-neutral-600 mt-1 text-sm">
+                            Pay now with card, transfer, or USSD via Paystack.
+                          </p>
+                        </div>
+                      </label>
+                    </>
+                  ) : (
+                    <div className="flex items-start gap-4 p-4 rounded-xl border-2 border-brand-gold bg-brand-gold/5">
+                      <div className="w-10 h-10 rounded-full bg-brand-gold/20 flex items-center justify-center shrink-0 mt-1">
+                        <CreditCard className="h-5 w-5 text-brand-dark" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-brand-dark text-lg">
+                          Secure Online Payment Required
+                        </h4>
+                        <p className="text-neutral-600 mt-1">
+                          Because you are ordering to {selectedState}, secure online payment via Paystack is required before dispatch.
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-bold text-brand-dark text-lg">
-                        {podAvailable ? "Payment on Delivery Selected" : "Secure Online Payment Required"}
-                      </h4>
-                      <p className="text-neutral-600 mt-1">
-                        {podAvailable 
-                          ? `Good news! Payment on Delivery is available in ${selectedState}. You will only pay when your order arrives.`
-                          : `Because you are ordering to ${selectedState}, secure online payment is required before dispatch. Your payment is protected by Paystack.`
-                        }
-                      </p>
-                    </div>
-                  </div>
+                  )}
                 </CardContent>
               </Card>
             )}
@@ -318,7 +374,7 @@ function OrderForm() {
               disabled={isSubmitting}
               className="w-full h-14 text-lg bg-brand-gold hover:bg-brand-gold-light text-brand-dark font-bold shadow-[0_0_15px_rgba(201,168,76,0.3)]"
             >
-              {isSubmitting ? "Processing..." : (podAvailable || !selectedState ? "Complete Order" : "Proceed to Payment")}
+              {isSubmitting ? "Processing..." : (!selectedState ? "Complete Order" : (podAvailable && preferredPayment === "pay_on_delivery" ? "Complete Order" : "Proceed to Payment"))}
             </Button>
 
             <div className="flex items-center justify-center gap-6 pt-4 text-sm text-neutral-500">

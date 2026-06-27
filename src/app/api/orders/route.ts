@@ -11,7 +11,7 @@ const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "orders@vigorbold.com"
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { packageDetails, values, originUrl } = body
+    const { packageDetails, values, originUrl, paymentMethod: clientPaymentMethod } = body
 
     // Validate request
     if (!packageDetails || !values) {
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
     // Determine payment method
     const podAvailable = isPodAvailable(values.state)
-    const paymentMethod = podAvailable ? "pay_on_delivery" : "paystack"
+    const paymentMethod = (podAvailable && clientPaymentMethod === "pay_on_delivery") ? "pay_on_delivery" : "paystack"
     
     // Generate Order ID manually to bypass Supabase RLS SELECT restrictions for anon users
     const orderId = crypto.randomUUID()
