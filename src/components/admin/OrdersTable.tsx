@@ -36,10 +36,48 @@ export function OrdersTable({
   const [updating, setUpdating] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
   const router = useRouter()
 
   const totalPages = Math.ceil(orders.length / pageSize)
   const paginatedOrders = orders.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  const displayedOrders = hidePagination ? orders : paginatedOrders
+
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setSelectedIds(displayedOrders.map(o => o.id))
+    } else {
+      setSelectedIds([])
+    }
+  }
+
+  const handleSelectRow = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
+    e.stopPropagation()
+    if (e.target.checked) {
+      setSelectedIds(prev => [...prev, id])
+    } else {
+      setSelectedIds(prev => prev.filter(i => i !== id))
+    }
+  }
+
+  const handleBulkUpdate = async (newStatus: string) => {
+    setUpdating(true)
+    try {
+      const res = await fetch('/api/admin/orders/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderIds: selectedIds, status: newStatus })
+      })
+      if (res.ok) {
+        setSelectedIds([])
+        router.refresh()
+      }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setUpdating(false)
+    }
+  }
 
   const handleUpdateStatus = async (orderId: string, newStatus: string) => {
     setUpdating(true)
@@ -63,21 +101,60 @@ export function OrdersTable({
   return (
     <>
       <div className="bg-white border border-neutral-200 shadow-sm rounded-xl overflow-hidden">
-        <div className="bg-neutral-50/50 border-b border-neutral-100 p-6 flex items-center justify-between">
-          <h3 className="text-lg font-serif font-bold text-brand-dark">{title}</h3>
-          {viewAllLink && (
-            <Link 
-              href={viewAllLink}
-              className="text-sm font-medium text-brand-gold hover:text-brand-gold-light flex items-center transition-colors cursor-pointer"
-            >
-              View All <ArrowRight className="w-4 h-4 ml-1" />
-            </Link>
+        <div className="bg-neutral-50/50 border-b border-neutral-100 p-6 flex items-center justify-between min-h-[80px]">
+          {selectedIds.length > 0 ? (
+            <div className="flex items-center space-x-4 w-full">
+              <span className="text-sm font-medium text-brand-dark bg-brand-gold/20 px-3 py-1 rounded-full">{selectedIds.length} selected</span>
+              <div className="flex space-x-2">
+                <button 
+                  onClick={() => handleBulkUpdate("shipped")} 
+                  disabled={updating}
+                  className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded shadow-sm transition-colors cursor-pointer disabled:opacity-50 flex items-center"
+                >
+                  {updating ? "..." : <><CheckCircle className="w-3 h-3 mr-1" /> Mark Shipped</>}
+                </button>
+                <button 
+                  onClick={() => handleBulkUpdate("pending")} 
+                  disabled={updating}
+                  className="px-3 py-1.5 bg-neutral-200 hover:bg-neutral-300 text-neutral-800 text-xs font-bold rounded shadow-sm transition-colors cursor-pointer disabled:opacity-50 flex items-center"
+                >
+                  {updating ? "..." : <><Clock className="w-3 h-3 mr-1" /> Mark Pending</>}
+                </button>
+                <button 
+                  onClick={() => handleBulkUpdate("test")} 
+                  disabled={updating}
+                  className="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-800 text-xs font-bold rounded shadow-sm transition-colors cursor-pointer disabled:opacity-50 flex items-center border border-red-200"
+                >
+                  {updating ? "..." : "Mark as Test"}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <h3 className="text-lg font-serif font-bold text-brand-dark">{title}</h3>
+              {viewAllLink && (
+                <Link 
+                  href={viewAllLink}
+                  className="text-sm font-medium text-brand-gold hover:text-brand-gold-light flex items-center transition-colors cursor-pointer"
+                >
+                  View All <ArrowRight className="w-4 h-4 ml-1" />
+                </Link>
+              )}
+            </>
           )}
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left text-neutral-600">
             <thead className="text-xs text-neutral-700 uppercase bg-neutral-50 border-b border-neutral-200">
               <tr>
+                <th className="px-6 py-4 w-12 text-center">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedIds.length === displayedOrders.length && displayedOrders.length > 0}
+                    onChange={handleSelectAll}
+                    className="rounded border-neutral-300 text-brand-gold focus:ring-brand-gold cursor-pointer"
+                  />
+                </th>
                 <th className="px-6 py-4 font-semibold">Customer</th>
                 <th className="px-6 py-4 font-semibold">Location</th>
                 <th className="px-6 py-4 font-semibold">Package</th>
@@ -90,17 +167,25 @@ export function OrdersTable({
             <tbody>
               {orders.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-neutral-500">
+                  <td colSpan={7} className="px-6 py-8 text-center text-neutral-500">
                     No orders found yet.
                   </td>
                 </tr>
               ) : (
-                (hidePagination ? orders : paginatedOrders).map((order) => (
+                displayedOrders.map((order) => (
                   <tr 
                     key={order.id} 
                     onClick={() => setSelectedOrder(order)}
-                    className="border-b border-neutral-100 hover:bg-neutral-50 transition-colors cursor-pointer"
+                    className={`border-b border-neutral-100 hover:bg-neutral-50 transition-colors cursor-pointer ${selectedIds.includes(order.id) ? 'bg-brand-gold/5' : ''}`}
                   >
+                    <td className="px-6 py-4 text-center" onClick={e => e.stopPropagation()}>
+                      <input 
+                        type="checkbox" 
+                        checked={selectedIds.includes(order.id)}
+                        onChange={(e) => handleSelectRow(e, order.id)}
+                        className="rounded border-neutral-300 text-brand-gold focus:ring-brand-gold cursor-pointer"
+                      />
+                    </td>
                     <td className="px-6 py-4">
                       <div className="font-medium text-brand-dark">{order.first_name} {order.last_name}</div>
                       <div className="text-xs text-neutral-500">{order.phone}</div>

@@ -11,9 +11,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { orderId, status } = await request.json()
+    const { orderId, orderIds, status } = await request.json()
+    const idsToUpdate = orderIds || (orderId ? [orderId] : [])
 
-    if (!orderId || !status) {
+    if (idsToUpdate.length === 0 || !status) {
       return NextResponse.json({ error: 'Missing parameters' }, { status: 400 })
     }
 
@@ -21,7 +22,7 @@ export async function POST(request: Request) {
     const { error } = await adminSupabase
       .from('orders')
       .update({ status: status })
-      .eq('id', orderId)
+      .in('id', idsToUpdate)
 
     if (error) {
       console.error("Supabase update error:", error)

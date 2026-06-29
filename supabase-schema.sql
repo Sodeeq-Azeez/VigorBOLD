@@ -1,7 +1,7 @@
 -- Run this in your Supabase SQL Editor to create the tables
 
 -- Create an enum for order status
-CREATE TYPE order_status AS ENUM ('pending', 'paid', 'processing', 'shipped', 'delivered', 'cancelled');
+CREATE TYPE order_status AS ENUM ('pending', 'paid', 'processing', 'shipped', 'delivered', 'cancelled', 'test');
 
 -- Create an enum for payment method
 CREATE TYPE payment_method AS ENUM ('pay_on_delivery', 'paystack');
