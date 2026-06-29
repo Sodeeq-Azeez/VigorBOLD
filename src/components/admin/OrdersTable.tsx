@@ -129,7 +129,11 @@ export function OrdersTable({
                       )}
                     </td>
                     <td className="px-6 py-4">
-                      {order.status === "shipped" || order.status === "delivered" ? (
+                      {order.status === "test" ? (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                          Test Data
+                        </span>
+                      ) : order.status === "shipped" || order.status === "delivered" ? (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                           Shipped
                         </span>
@@ -261,8 +265,8 @@ export function OrdersTable({
 
             </div>
             <div className="p-4 bg-neutral-50 border-t border-neutral-100 flex items-center justify-between">
-              <div>
-                {selectedOrder.status !== "shipped" && selectedOrder.status !== "delivered" ? (
+              <div className="flex space-x-2">
+                {selectedOrder.status !== "shipped" && selectedOrder.status !== "delivered" && selectedOrder.status !== "test" ? (
                   <button 
                     onClick={() => handleUpdateStatus(selectedOrder.id, "shipped")}
                     disabled={updating}
@@ -270,13 +274,31 @@ export function OrdersTable({
                   >
                     {updating ? "Updating..." : <><CheckCircle className="w-4 h-4 mr-2" /> Mark as Shipped</>}
                   </button>
-                ) : (
+                ) : selectedOrder.status === "shipped" || selectedOrder.status === "delivered" ? (
                   <button 
                     onClick={() => handleUpdateStatus(selectedOrder.id, "pending")}
                     disabled={updating}
                     className="flex items-center px-4 py-2 bg-white border border-neutral-300 hover:bg-neutral-100 text-neutral-700 rounded-lg text-sm font-bold transition-colors disabled:opacity-50 cursor-pointer"
                   >
                     {updating ? "Updating..." : <><Clock className="w-4 h-4 mr-2" /> Revert to Pending</>}
+                  </button>
+                ) : null}
+
+                {selectedOrder.status !== "test" ? (
+                  <button 
+                    onClick={() => handleUpdateStatus(selectedOrder.id, "test")}
+                    disabled={updating}
+                    className="flex items-center px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg text-sm font-bold transition-colors disabled:opacity-50 cursor-pointer border border-red-200"
+                  >
+                    {updating ? "..." : "Mark as Test"}
+                  </button>
+                ) : (
+                  <button 
+                    onClick={() => handleUpdateStatus(selectedOrder.id, "pending")}
+                    disabled={updating}
+                    className="flex items-center px-4 py-2 bg-white border border-neutral-300 hover:bg-neutral-100 text-neutral-700 rounded-lg text-sm font-bold transition-colors disabled:opacity-50 cursor-pointer"
+                  >
+                    {updating ? "..." : "Unmark Test"}
                   </button>
                 )}
               </div>

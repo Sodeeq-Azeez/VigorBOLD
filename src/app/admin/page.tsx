@@ -20,20 +20,18 @@ export default async function AdminDashboard() {
   const safeOrders = orders || []
 
   // Calculate Metrics
-  const totalOrders = safeOrders.length
-  
-  // Total Revenue (assuming we only count paid or pending, not cancelled)
-  const totalRevenue = safeOrders.reduce((sum, order) => {
-    return sum + (order.total_amount || 0)
-  }, 0)
+  // Filter out test transactions for KPIs
+  const realOrders = safeOrders.filter(o => o.status !== "test")
 
-  // Payment Methods
-  const paystackOrders = safeOrders.filter(o => o.payment_method === "paystack").length
-  const podOrders = safeOrders.filter(o => o.payment_method === "pay_on_delivery").length
+  const totalRevenue = realOrders.reduce((sum, order) => sum + (order.total_amount || 0), 0)
+  const totalOrders = realOrders.length
+  
+  const paystackOrders = realOrders.filter(o => o.payment_method === "paystack").length
+  const podOrders = realOrders.filter(o => o.payment_method === "pay_on_delivery").length
 
   // Status counts
-  const pendingOrders = safeOrders.filter(o => o.status === "pending" || !o.status).length
-  const shippedOrders = safeOrders.filter(o => o.status === "shipped" || o.status === "delivered").length
+  const pendingOrders = realOrders.filter(o => o.status === "pending" || !o.status).length
+  const shippedOrders = realOrders.filter(o => o.status === "shipped" || o.status === "delivered").length
 
   // Recent Orders (top 10)
   const recentOrders = safeOrders.slice(0, 10)
