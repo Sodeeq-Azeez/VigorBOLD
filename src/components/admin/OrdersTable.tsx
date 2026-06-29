@@ -2,8 +2,9 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { formatDistanceToNow } from "date-fns"
-import { ArrowRight, X, Phone, Mail, MapPin, Package, CreditCard } from "lucide-react"
+import { ArrowRight, X, Phone, Mail, MapPin, Package, CreditCard, CheckCircle, Clock } from "lucide-react"
 
 interface Order {
   id: string
@@ -30,6 +31,27 @@ export function OrdersTable({
   viewAllLink?: string 
 }) {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+  const [updating, setUpdating] = useState(false)
+  const router = useRouter()
+
+  const handleUpdateStatus = async (orderId: string, newStatus: string) => {
+    setUpdating(true)
+    try {
+      const res = await fetch('/api/admin/orders/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, status: newStatus })
+      })
+      if (res.ok) {
+        if (selectedOrder) setSelectedOrder({ ...selectedOrder, status: newStatus })
+        router.refresh()
+      }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setUpdating(false)
+    }
+  }
 
   return (
     <>
@@ -54,6 +76,7 @@ export function OrdersTable({
                 <th className="px-6 py-4 font-semibold">Package</th>
                 <th className="px-6 py-4 font-semibold">Amount</th>
                 <th className="px-6 py-4 font-semibold">Payment</th>
+                <th className="px-6 py-4 font-semibold">Status</th>
                 <th className="px-6 py-4 font-semibold">Time</th>
               </tr>
             </thead>
@@ -95,6 +118,17 @@ export function OrdersTable({
                       ) : (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
                           POD
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      {order.status === "shipped" || order.status === "delivered" ? (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          Shipped
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-neutral-100 text-neutral-800">
+                          Pending
                         </span>
                       )}
                     </td>
@@ -180,7 +214,26 @@ export function OrdersTable({
               </div>
 
             </div>
-            <div className="p-4 bg-neutral-50 border-t border-neutral-100 flex justify-end">
+            <div className="p-4 bg-neutral-50 border-t border-neutral-100 flex items-center justify-between">
+              <div>
+                {selectedOrder.status !== "shipped" && selectedOrder.status !== "delivered" ? (
+                  <button 
+                    onClick={() => handleUpdateStatus(selectedOrder.id, "shipped")}
+                    disabled={updating}
+                    className="flex items-center px-4 py-2 bg-brand-dark hover:bg-neutral-800 text-brand-gold rounded-lg text-sm font-bold transition-colors disabled:opacity-50"
+                  >
+                    {updating ? "Updating..." : <><CheckCircle className="w-4 h-4 mr-2" /> Mark as Shipped</>}
+                  </button>
+                ) : (
+                  <button 
+                    onClick={() => handleUpdateStatus(selectedOrder.id, "pending")}
+                    disabled={updating}
+                    className="flex items-center px-4 py-2 bg-white border border-neutral-300 hover:bg-neutral-100 text-neutral-700 rounded-lg text-sm font-bold transition-colors disabled:opacity-50"
+                  >
+                    {updating ? "Updating..." : <><Clock className="w-4 h-4 mr-2" /> Revert to Pending</>}
+                  </button>
+                )}
+              </div>
               <button 
                 onClick={() => setSelectedOrder(null)}
                 className="px-4 py-2 bg-neutral-200 hover:bg-neutral-300 text-neutral-700 rounded-lg text-sm font-medium transition-colors"
