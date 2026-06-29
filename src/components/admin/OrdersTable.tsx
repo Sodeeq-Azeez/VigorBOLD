@@ -24,11 +24,13 @@ interface Order {
 export function OrdersTable({ 
   orders, 
   title, 
-  viewAllLink 
+  viewAllLink,
+  hidePagination 
 }: { 
   orders: Order[]
   title: string
   viewAllLink?: string 
+  hidePagination?: boolean
 }) {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [updating, setUpdating] = useState(false)
@@ -93,7 +95,7 @@ export function OrdersTable({
                   </td>
                 </tr>
               ) : (
-                paginatedOrders.map((order) => (
+                (hidePagination ? orders : paginatedOrders).map((order) => (
                   <tr 
                     key={order.id} 
                     onClick={() => setSelectedOrder(order)}
@@ -148,41 +150,43 @@ export function OrdersTable({
         </div>
         
         {/* Pagination Controls */}
-        <div className="p-4 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between text-sm text-neutral-600 bg-neutral-50/30 gap-4">
-          <div className="flex items-center space-x-2">
-            <span>Show</span>
-            <select 
-              value={pageSize} 
-              onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1) }}
-              className="border border-neutral-300 rounded p-1 bg-white cursor-pointer"
-            >
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-            </select>
-            <span>entries</span>
-          </div>
-          <div className="flex items-center space-x-4">
-            <span>Page {currentPage} of {totalPages || 1}</span>
-            <div className="flex space-x-1">
-              <button 
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="px-3 py-1 border border-neutral-300 bg-white rounded hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+        {!hidePagination && (
+          <div className="p-4 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between text-sm text-neutral-600 bg-neutral-50/30 gap-4">
+            <div className="flex items-center space-x-2">
+              <span>Show</span>
+              <select 
+                value={pageSize} 
+                onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1) }}
+                className="border border-neutral-300 rounded p-1 bg-white cursor-pointer"
               >
-                Prev
-              </button>
-              <button 
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages || totalPages === 0}
-                className="px-3 py-1 border border-neutral-300 bg-white rounded hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
-              >
-                Next
-              </button>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+              <span>of {orders.length} entries</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span>Page {currentPage} of {totalPages || 1}</span>
+              <div className="flex space-x-1">
+                <button 
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1 border border-neutral-300 bg-white rounded hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                >
+                  Prev
+                </button>
+                <button 
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages || totalPages === 0}
+                  className="px-3 py-1 border border-neutral-300 bg-white rounded hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Details Modal */}

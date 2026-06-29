@@ -133,6 +133,7 @@ export default async function AdminDashboard() {
         orders={recentOrders} 
         title="Recent Orders" 
         viewAllLink="/admin/orders" 
+        hidePagination={true}
       />
     </div>
   )
