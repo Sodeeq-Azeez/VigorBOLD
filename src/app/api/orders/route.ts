@@ -6,7 +6,7 @@ import { OrderConfirmationEmail } from "@/emails/order-confirmation"
 import crypto from "crypto"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "orders@vigorbold.com"
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "sales@vigorbold.zeenu.com.ng"
 
 export async function POST(req: Request) {
   try {
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     // Determine payment method
     const podAvailable = isPodAvailable(values.state)
     const paymentMethod = (podAvailable && clientPaymentMethod === "pay_on_delivery") ? "pay_on_delivery" : "paystack"
-    
+
     // Generate Order ID manually to bypass Supabase RLS SELECT restrictions for anon users
     const orderId = crypto.randomUUID()
 
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
     // Handle Paystack Payment Initialization
     if (paymentMethod === "paystack") {
       const paystackSecretKey = process.env.PAYSTACK_SECRET_KEY
-      
+
       // We must have an email for Paystack, if user didn't provide one, use a dummy one based on phone
       const customerEmail = values.email || `${values.phone}@vigorbold-customer.com`
 
@@ -91,8 +91,8 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Failed to initialize payment gateway" }, { status: 500 })
       }
 
-      return NextResponse.json({ 
-        success: true, 
+      return NextResponse.json({
+        success: true,
         orderId: orderId,
         paymentMethod,
         authorization_url: paystackData.data.authorization_url
@@ -156,8 +156,8 @@ export async function POST(req: Request) {
       }
     }
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       orderId: orderId,
       paymentMethod,
       amount: orderData.total_amount

@@ -99,6 +99,16 @@ function OrderForm() {
 
   useEffect(() => {
     if (submitSuccess) {
+      // Trigger Meta Pixel Purchase Event
+      if (typeof window !== "undefined" && (window as any).fbq) {
+        (window as any).fbq('track', 'Purchase', {
+          value: selectedPkg.price,
+          currency: 'NGN',
+          content_name: selectedPkg.name,
+          content_ids: [selectedPkg.id],
+        });
+      }
+
       // Prevent going back
       window.history.pushState(null, "", window.location.href);
       const handlePopState = () => {
@@ -107,7 +117,7 @@ function OrderForm() {
       window.addEventListener("popstate", handlePopState);
       return () => window.removeEventListener("popstate", handlePopState);
     }
-  }, [submitSuccess]);
+  }, [submitSuccess, selectedPkg]);
 
   if (submitSuccess) {
     const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "2348141181083"
