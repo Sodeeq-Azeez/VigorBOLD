@@ -1,6 +1,6 @@
 import { adminSupabase } from "@/lib/supabase"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { DollarSign, ShoppingBag, CreditCard, Wallet, TrendingUp } from "lucide-react"
+import { DollarSign, ShoppingBag, CreditCard, Wallet, TrendingUp, Clock, PackageCheck } from "lucide-react"
 import { OrdersTable } from "@/components/admin/OrdersTable"
 
 export const dynamic = "force-dynamic"
@@ -31,6 +31,10 @@ export default async function AdminDashboard() {
   const paystackOrders = safeOrders.filter(o => o.payment_method === "paystack").length
   const podOrders = safeOrders.filter(o => o.payment_method === "pay_on_delivery").length
 
+  // Status counts
+  const pendingOrders = safeOrders.filter(o => o.status === "pending" || !o.status).length
+  const shippedOrders = safeOrders.filter(o => o.status === "shipped" || o.status === "delivered").length
+
   // Recent Orders (top 10)
   const recentOrders = safeOrders.slice(0, 10)
 
@@ -42,7 +46,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
         <Card className="border-neutral-200 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 bg-neutral-50/50 border-b border-neutral-100">
             <CardTitle className="text-sm font-medium text-neutral-600">Total Revenue</CardTitle>
@@ -94,6 +98,32 @@ export default async function AdminDashboard() {
           <CardContent className="pt-6">
             <div className="text-2xl font-bold text-brand-dark">{podOrders}</div>
             <p className="text-xs text-neutral-500 mt-1">Payment upon arrival</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-neutral-200 shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 bg-neutral-50/50 border-b border-neutral-100">
+            <CardTitle className="text-sm font-medium text-neutral-600">Pending</CardTitle>
+            <div className="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center">
+              <Clock className="w-4 h-4 text-neutral-600" />
+            </div>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <div className="text-2xl font-bold text-brand-dark">{pendingOrders}</div>
+            <p className="text-xs text-neutral-500 mt-1">Awaiting fulfillment</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-neutral-200 shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 bg-neutral-50/50 border-b border-neutral-100">
+            <CardTitle className="text-sm font-medium text-neutral-600">Shipped</CardTitle>
+            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+              <PackageCheck className="w-4 h-4 text-green-600" />
+            </div>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <div className="text-2xl font-bold text-brand-dark">{shippedOrders}</div>
+            <p className="text-xs text-neutral-500 mt-1">Sent to customers</p>
           </CardContent>
         </Card>
       </div>

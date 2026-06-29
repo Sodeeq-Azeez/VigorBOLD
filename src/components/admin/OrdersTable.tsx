@@ -76,7 +76,7 @@ export function OrdersTable({
                 <th className="px-6 py-4 font-semibold">Package</th>
                 <th className="px-6 py-4 font-semibold">Amount</th>
                 <th className="px-6 py-4 font-semibold">Payment</th>
-                <th className="px-6 py-4 font-semibold">Status</th>
+                <th className="px-6 py-4 font-semibold">Shipping Status</th>
                 <th className="px-6 py-4 font-semibold">Time</th>
               </tr>
             </thead>
