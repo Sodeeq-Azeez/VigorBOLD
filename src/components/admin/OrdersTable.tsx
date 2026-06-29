@@ -32,7 +32,12 @@ export function OrdersTable({
 }) {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [updating, setUpdating] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
   const router = useRouter()
+
+  const totalPages = Math.ceil(orders.length / pageSize)
+  const paginatedOrders = orders.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 
   const handleUpdateStatus = async (orderId: string, newStatus: string) => {
     setUpdating(true)
@@ -61,7 +66,7 @@ export function OrdersTable({
           {viewAllLink && (
             <Link 
               href={viewAllLink}
-              className="text-sm font-medium text-brand-gold hover:text-brand-gold-light flex items-center transition-colors"
+              className="text-sm font-medium text-brand-gold hover:text-brand-gold-light flex items-center transition-colors cursor-pointer"
             >
               View All <ArrowRight className="w-4 h-4 ml-1" />
             </Link>
@@ -88,7 +93,7 @@ export function OrdersTable({
                   </td>
                 </tr>
               ) : (
-                orders.map((order) => (
+                paginatedOrders.map((order) => (
                   <tr 
                     key={order.id} 
                     onClick={() => setSelectedOrder(order)}
@@ -141,6 +146,43 @@ export function OrdersTable({
             </tbody>
           </table>
         </div>
+        
+        {/* Pagination Controls */}
+        <div className="p-4 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between text-sm text-neutral-600 bg-neutral-50/30 gap-4">
+          <div className="flex items-center space-x-2">
+            <span>Show</span>
+            <select 
+              value={pageSize} 
+              onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1) }}
+              className="border border-neutral-300 rounded p-1 bg-white cursor-pointer"
+            >
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </select>
+            <span>entries</span>
+          </div>
+          <div className="flex items-center space-x-4">
+            <span>Page {currentPage} of {totalPages || 1}</span>
+            <div className="flex space-x-1">
+              <button 
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1 border border-neutral-300 bg-white rounded hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+              >
+                Prev
+              </button>
+              <button 
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages || totalPages === 0}
+                className="px-3 py-1 border border-neutral-300 bg-white rounded hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Details Modal */}
@@ -151,7 +193,7 @@ export function OrdersTable({
               <h3 className="font-serif font-bold text-xl">Order Details</h3>
               <button 
                 onClick={() => setSelectedOrder(null)}
-                className="text-neutral-400 hover:text-white transition-colors"
+                className="text-neutral-400 hover:text-white transition-colors cursor-pointer"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -220,7 +262,7 @@ export function OrdersTable({
                   <button 
                     onClick={() => handleUpdateStatus(selectedOrder.id, "shipped")}
                     disabled={updating}
-                    className="flex items-center px-4 py-2 bg-brand-dark hover:bg-neutral-800 text-brand-gold rounded-lg text-sm font-bold transition-colors disabled:opacity-50"
+                    className="flex items-center px-4 py-2 bg-brand-dark hover:bg-neutral-800 text-brand-gold rounded-lg text-sm font-bold transition-colors disabled:opacity-50 cursor-pointer"
                   >
                     {updating ? "Updating..." : <><CheckCircle className="w-4 h-4 mr-2" /> Mark as Shipped</>}
                   </button>
@@ -228,7 +270,7 @@ export function OrdersTable({
                   <button 
                     onClick={() => handleUpdateStatus(selectedOrder.id, "pending")}
                     disabled={updating}
-                    className="flex items-center px-4 py-2 bg-white border border-neutral-300 hover:bg-neutral-100 text-neutral-700 rounded-lg text-sm font-bold transition-colors disabled:opacity-50"
+                    className="flex items-center px-4 py-2 bg-white border border-neutral-300 hover:bg-neutral-100 text-neutral-700 rounded-lg text-sm font-bold transition-colors disabled:opacity-50 cursor-pointer"
                   >
                     {updating ? "Updating..." : <><Clock className="w-4 h-4 mr-2" /> Revert to Pending</>}
                   </button>
@@ -236,7 +278,7 @@ export function OrdersTable({
               </div>
               <button 
                 onClick={() => setSelectedOrder(null)}
-                className="px-4 py-2 bg-neutral-200 hover:bg-neutral-300 text-neutral-700 rounded-lg text-sm font-medium transition-colors"
+                className="px-4 py-2 bg-neutral-200 hover:bg-neutral-300 text-neutral-700 rounded-lg text-sm font-medium transition-colors cursor-pointer"
               >
                 Close
               </button>
