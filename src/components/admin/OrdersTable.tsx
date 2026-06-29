@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { formatDistanceToNow } from "date-fns"
@@ -37,11 +37,49 @@ export function OrdersTable({
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [selectedIds, setSelectedIds] = useState<string[]>([])
+  
+  const [searchTerm, setSearchTerm] = useState("")
+  const [paymentFilter, setPaymentFilter] = useState("all")
+  const [packageFilter, setPackageFilter] = useState("all")
+  const [statusFilter, setStatusFilter] = useState("all")
+  
   const router = useRouter()
 
-  const totalPages = Math.ceil(orders.length / pageSize)
-  const paginatedOrders = orders.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-  const displayedOrders = hidePagination ? orders : paginatedOrders
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchTerm, paymentFilter, packageFilter, statusFilter, pageSize])
+
+  const uniquePackages = useMemo(() => {
+    return Array.from(new Set(orders.map(o => o.package_name.split('(')[0].trim())))
+  }, [orders])
+
+  const filteredOrders = useMemo(() => {
+    return orders.filter((order) => {
+      const searchLower = searchTerm.toLowerCase()
+      const matchesSearch = 
+        searchTerm === "" || 
+        order.first_name.toLowerCase().includes(searchLower) ||
+        order.last_name.toLowerCase().includes(searchLower) ||
+        order.phone.includes(searchTerm) ||
+        order.id.toLowerCase().includes(searchLower)
+
+      const matchesPayment = paymentFilter === "all" || order.payment_method === paymentFilter
+
+      const packageName = order.package_name.split('(')[0].trim()
+      const matchesPackage = packageFilter === "all" || packageName === packageFilter
+
+      let orderStatusStr = "pending"
+      if (order.status === "shipped" || order.status === "delivered") orderStatusStr = "shipped"
+      if (order.status === "test") orderStatusStr = "test"
+      const matchesStatus = statusFilter === "all" || orderStatusStr === statusFilter
+
+      return matchesSearch && matchesPayment && matchesPackage && matchesStatus
+    })
+  }, [orders, searchTerm, paymentFilter, packageFilter, statusFilter])
+
+  const totalPages = Math.ceil(filteredOrders.length / pageSize)
+  const paginatedOrders = filteredOrders.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  const displayedOrders = hidePagination ? filteredOrders : paginatedOrders
 
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -143,6 +181,55 @@ export function OrdersTable({
             </>
           )}
         </div>
+
+        {/* Filters Section */}
+        {!hidePagination && (
+          <div className="bg-neutral-50/30 p-4 border-b border-neutral-100 flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div className="w-full md:w-1/3">
+              <input 
+                type="text" 
+                placeholder="Search name, phone, or ID..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-4 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-gold focus:border-transparent bg-white"
+              />
+            </div>
+            <div className="flex flex-wrap gap-2 w-full md:w-auto">
+              <select 
+                value={paymentFilter}
+                onChange={(e) => setPaymentFilter(e.target.value)}
+                className="px-3 py-2 text-sm border border-neutral-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-gold cursor-pointer"
+              >
+                <option value="all">All Payments</option>
+                <option value="paystack">Paystack</option>
+                <option value="pay_on_delivery">Pay on Delivery</option>
+              </select>
+              
+              <select 
+                value={packageFilter}
+                onChange={(e) => setPackageFilter(e.target.value)}
+                className="px-3 py-2 text-sm border border-neutral-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-gold cursor-pointer"
+              >
+                <option value="all">All Packages</option>
+                {uniquePackages.map(pkg => (
+                  <option key={pkg} value={pkg}>{pkg}</option>
+                ))}
+              </select>
+
+              <select 
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="px-3 py-2 text-sm border border-neutral-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-gold cursor-pointer"
+              >
+                <option value="all">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="shipped">Shipped</option>
+                <option value="test">Test Data</option>
+              </select>
+            </div>
+          </div>
+        )}
+
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left text-neutral-600">
             <thead className="text-xs text-neutral-700 uppercase bg-neutral-50 border-b border-neutral-200">
@@ -165,7 +252,7 @@ export function OrdersTable({
               </tr>
             </thead>
             <tbody>
-              {orders.length === 0 ? (
+              {filteredOrders.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="px-6 py-8 text-center text-neutral-500">
                     No orders found yet.
@@ -253,7 +340,7 @@ export function OrdersTable({
                 <option value={50}>50</option>
                 <option value={100}>100</option>
               </select>
-              <span>of {orders.length} entries</span>
+              <span>of {filteredOrders.length} entries</span>
             </div>
             <div className="flex items-center space-x-4">
               <span>Page {currentPage} of {totalPages || 1}</span>
