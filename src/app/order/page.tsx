@@ -102,7 +102,8 @@ function OrderForm() {
       // Trigger Meta Pixel Purchase Event
       if (typeof window !== "undefined" && (window as any).fbq) {
         try {
-          const orderValue = Number(selectedPkg?.price || 65000);
+          const rawValue = selectedPkg?.price || 65000;
+          const orderValue = Number(Number(rawValue).toFixed(2));
           (window as any).fbq('track', 'Purchase', {
             value: orderValue,
             currency: 'NGN',
