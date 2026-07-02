@@ -101,12 +101,18 @@ function OrderForm() {
     if (submitSuccess) {
       // Trigger Meta Pixel Purchase Event
       if (typeof window !== "undefined" && (window as any).fbq) {
-        (window as any).fbq('track', 'Purchase', {
-          value: selectedPkg.price,
-          currency: 'NGN',
-          content_name: selectedPkg.name,
-          content_ids: [selectedPkg.id],
-        });
+        try {
+          const orderValue = Number(selectedPkg?.price || 65000);
+          (window as any).fbq('track', 'Purchase', {
+            value: orderValue,
+            currency: 'NGN',
+            content_name: selectedPkg?.name || 'VigorBOLD Package',
+            content_ids: [selectedPkg?.id || 'popular'],
+            content_type: 'product'
+          });
+        } catch (e) {
+          console.error("FB Pixel Error:", e);
+        }
       }
 
       // Prevent going back
